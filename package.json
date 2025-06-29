@@ -2,10 +2,32 @@
   "name": "todo-chatbot",
   "version": "1.0.0",
   "description": "individual assignment",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "@copilotkit/react-textarea": "^1.9.1",
+    "@copilotkit/shared": "^1.1.2",
+    "@heroicons/react": "^2.1.5",
+    "nanoid": "^5.0.8",
+    "next": "14.2.6",
+    "react": "^18",
+    "react-datepicker": "^7.5.0",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.6",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
 }
+
