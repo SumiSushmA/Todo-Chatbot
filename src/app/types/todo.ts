@@ -1,3 +1,4 @@
+//src\app\types\todo.ts
 export type Priority = 'High' | 'Medium' | 'Low' | null;
 
 export interface Todo {
