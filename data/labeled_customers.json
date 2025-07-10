@@ -1,0 +1,1402 @@
+[
+  {
+    "id": "0001",
+    "age": "19",
+    "income": "15",
+    "score": "39",
+    "cluster": 3
+  },
+  {
+    "id": "0002",
+    "age": "21",
+    "income": "15",
+    "score": "81",
+    "cluster": 4
+  },
+  {
+    "id": "0003",
+    "age": "20",
+    "income": "16",
+    "score": "6",
+    "cluster": 3
+  },
+  {
+    "id": "0004",
+    "age": "23",
+    "income": "16",
+    "score": "77",
+    "cluster": 4
+  },
+  {
+    "id": "0005",
+    "age": "31",
+    "income": "17",
+    "score": "40",
+    "cluster": 3
+  },
+  {
+    "id": "0006",
+    "age": "22",
+    "income": "17",
+    "score": "76",
+    "cluster": 4
+  },
+  {
+    "id": "0007",
+    "age": "35",
+    "income": "18",
+    "score": "6",
+    "cluster": 3
+  },
+  {
+    "id": "0008",
+    "age": "23",
+    "income": "18",
+    "score": "94",
+    "cluster": 4
+  },
+  {
+    "id": "0009",
+    "age": "64",
+    "income": "19",
+    "score": "3",
+    "cluster": 3
+  },
+  {
+    "id": "0010",
+    "age": "30",
+    "income": "19",
+    "score": "72",
+    "cluster": 4
+  },
+  {
+    "id": "0011",
+    "age": "67",
+    "income": "19",
+    "score": "14",
+    "cluster": 3
+  },
+  {
+    "id": "0012",
+    "age": "35",
+    "income": "19",
+    "score": "99",
+    "cluster": 4
+  },
+  {
+    "id": "0013",
+    "age": "58",
+    "income": "20",
+    "score": "15",
+    "cluster": 3
+  },
+  {
+    "id": "0014",
+    "age": "24",
+    "income": "20",
+    "score": "77",
+    "cluster": 4
+  },
+  {
+    "id": "0015",
+    "age": "37",
+    "income": "20",
+    "score": "13",
+    "cluster": 3
+  },
+  {
+    "id": "0016",
+    "age": "22",
+    "income": "20",
+    "score": "79",
+    "cluster": 4
+  },
+  {
+    "id": "0017",
+    "age": "35",
+    "income": "21",
+    "score": "35",
+    "cluster": 3
+  },
+  {
+    "id": "0018",
+    "age": "20",
+    "income": "21",
+    "score": "66",
+    "cluster": 4
+  },
+  {
+    "id": "0019",
+    "age": "52",
+    "income": "23",
+    "score": "29",
+    "cluster": 3
+  },
+  {
+    "id": "0020",
+    "age": "35",
+    "income": "23",
+    "score": "98",
+    "cluster": 4
+  },
+  {
+    "id": "0021",
+    "age": "35",
+    "income": "24",
+    "score": "35",
+    "cluster": 3
+  },
+  {
+    "id": "0022",
+    "age": "25",
+    "income": "24",
+    "score": "73",
+    "cluster": 4
+  },
+  {
+    "id": "0023",
+    "age": "46",
+    "income": "25",
+    "score": "5",
+    "cluster": 3
+  },
+  {
+    "id": "0024",
+    "age": "31",
+    "income": "25",
+    "score": "73",
+    "cluster": 4
+  },
+  {
+    "id": "0025",
+    "age": "54",
+    "income": "28",
+    "score": "14",
+    "cluster": 3
+  },
+  {
+    "id": "0026",
+    "age": "29",
+    "income": "28",
+    "score": "82",
+    "cluster": 4
+  },
+  {
+    "id": "0027",
+    "age": "45",
+    "income": "28",
+    "score": "32",
+    "cluster": 3
+  },
+  {
+    "id": "0028",
+    "age": "35",
+    "income": "28",
+    "score": "61",
+    "cluster": 4
+  },
+  {
+    "id": "0029",
+    "age": "40",
+    "income": "29",
+    "score": "31",
+    "cluster": 3
+  },
+  {
+    "id": "0030",
+    "age": "23",
+    "income": "29",
+    "score": "87",
+    "cluster": 4
+  },
+  {
+    "id": "0031",
+    "age": "60",
+    "income": "30",
+    "score": "4",
+    "cluster": 3
+  },
+  {
+    "id": "0032",
+    "age": "21",
+    "income": "30",
+    "score": "73",
+    "cluster": 4
+  },
+  {
+    "id": "0033",
+    "age": "53",
+    "income": "33",
+    "score": "4",
+    "cluster": 3
+  },
+  {
+    "id": "0034",
+    "age": "18",
+    "income": "33",
+    "score": "92",
+    "cluster": 4
+  },
+  {
+    "id": "0035",
+    "age": "49",
+    "income": "33",
+    "score": "14",
+    "cluster": 3
+  },
+  {
+    "id": "0036",
+    "age": "21",
+    "income": "33",
+    "score": "81",
+    "cluster": 4
+  },
+  {
+    "id": "0037",
+    "age": "42",
+    "income": "34",
+    "score": "17",
+    "cluster": 3
+  },
+  {
+    "id": "0038",
+    "age": "30",
+    "income": "34",
+    "score": "73",
+    "cluster": 4
+  },
+  {
+    "id": "0039",
+    "age": "36",
+    "income": "37",
+    "score": "26",
+    "cluster": 3
+  },
+  {
+    "id": "0040",
+    "age": "20",
+    "income": "37",
+    "score": "75",
+    "cluster": 4
+  },
+  {
+    "id": "0041",
+    "age": "65",
+    "income": "38",
+    "score": "35",
+    "cluster": 3
+  },
+  {
+    "id": "0042",
+    "age": "24",
+    "income": "38",
+    "score": "92",
+    "cluster": 4
+  },
+  {
+    "id": "0043",
+    "age": "48",
+    "income": "39",
+    "score": "36",
+    "cluster": 3
+  },
+  {
+    "id": "0044",
+    "age": "31",
+    "income": "39",
+    "score": "61",
+    "cluster": 0
+  },
+  {
+    "id": "0045",
+    "age": "49",
+    "income": "39",
+    "score": "28",
+    "cluster": 3
+  },
+  {
+    "id": "0046",
+    "age": "24",
+    "income": "39",
+    "score": "65",
+    "cluster": 4
+  },
+  {
+    "id": "0047",
+    "age": "50",
+    "income": "40",
+    "score": "55",
+    "cluster": 0
+  },
+  {
+    "id": "0048",
+    "age": "27",
+    "income": "40",
+    "score": "47",
+    "cluster": 0
+  },
+  {
+    "id": "0049",
+    "age": "29",
+    "income": "40",
+    "score": "42",
+    "cluster": 0
+  },
+  {
+    "id": "0050",
+    "age": "31",
+    "income": "40",
+    "score": "42",
+    "cluster": 0
+  },
+  {
+    "id": "0051",
+    "age": "49",
+    "income": "42",
+    "score": "52",
+    "cluster": 0
+  },
+  {
+    "id": "0052",
+    "age": "33",
+    "income": "42",
+    "score": "60",
+    "cluster": 0
+  },
+  {
+    "id": "0053",
+    "age": "31",
+    "income": "43",
+    "score": "54",
+    "cluster": 0
+  },
+  {
+    "id": "0054",
+    "age": "59",
+    "income": "43",
+    "score": "60",
+    "cluster": 0
+  },
+  {
+    "id": "0055",
+    "age": "50",
+    "income": "43",
+    "score": "45",
+    "cluster": 0
+  },
+  {
+    "id": "0056",
+    "age": "47",
+    "income": "43",
+    "score": "41",
+    "cluster": 0
+  },
+  {
+    "id": "0057",
+    "age": "51",
+    "income": "44",
+    "score": "50",
+    "cluster": 0
+  },
+  {
+    "id": "0058",
+    "age": "69",
+    "income": "44",
+    "score": "46",
+    "cluster": 0
+  },
+  {
+    "id": "0059",
+    "age": "27",
+    "income": "46",
+    "score": "51",
+    "cluster": 0
+  },
+  {
+    "id": "0060",
+    "age": "53",
+    "income": "46",
+    "score": "46",
+    "cluster": 0
+  },
+  {
+    "id": "0061",
+    "age": "70",
+    "income": "46",
+    "score": "56",
+    "cluster": 0
+  },
+  {
+    "id": "0062",
+    "age": "19",
+    "income": "46",
+    "score": "55",
+    "cluster": 0
+  },
+  {
+    "id": "0063",
+    "age": "67",
+    "income": "47",
+    "score": "52",
+    "cluster": 0
+  },
+  {
+    "id": "0064",
+    "age": "54",
+    "income": "47",
+    "score": "59",
+    "cluster": 0
+  },
+  {
+    "id": "0065",
+    "age": "63",
+    "income": "48",
+    "score": "51",
+    "cluster": 0
+  },
+  {
+    "id": "0066",
+    "age": "18",
+    "income": "48",
+    "score": "59",
+    "cluster": 0
+  },
+  {
+    "id": "0067",
+    "age": "43",
+    "income": "48",
+    "score": "50",
+    "cluster": 0
+  },
+  {
+    "id": "0068",
+    "age": "68",
+    "income": "48",
+    "score": "48",
+    "cluster": 0
+  },
+  {
+    "id": "0069",
+    "age": "19",
+    "income": "48",
+    "score": "59",
+    "cluster": 0
+  },
+  {
+    "id": "0070",
+    "age": "32",
+    "income": "48",
+    "score": "47",
+    "cluster": 0
+  },
+  {
+    "id": "0071",
+    "age": "70",
+    "income": "49",
+    "score": "55",
+    "cluster": 0
+  },
+  {
+    "id": "0072",
+    "age": "47",
+    "income": "49",
+    "score": "42",
+    "cluster": 0
+  },
+  {
+    "id": "0073",
+    "age": "60",
+    "income": "50",
+    "score": "49",
+    "cluster": 0
+  },
+  {
+    "id": "0074",
+    "age": "60",
+    "income": "50",
+    "score": "56",
+    "cluster": 0
+  },
+  {
+    "id": "0075",
+    "age": "59",
+    "income": "54",
+    "score": "47",
+    "cluster": 0
+  },
+  {
+    "id": "0076",
+    "age": "26",
+    "income": "54",
+    "score": "54",
+    "cluster": 0
+  },
+  {
+    "id": "0077",
+    "age": "45",
+    "income": "54",
+    "score": "53",
+    "cluster": 0
+  },
+  {
+    "id": "0078",
+    "age": "40",
+    "income": "54",
+    "score": "48",
+    "cluster": 0
+  },
+  {
+    "id": "0079",
+    "age": "23",
+    "income": "54",
+    "score": "52",
+    "cluster": 0
+  },
+  {
+    "id": "0080",
+    "age": "49",
+    "income": "54",
+    "score": "42",
+    "cluster": 0
+  },
+  {
+    "id": "0081",
+    "age": "57",
+    "income": "54",
+    "score": "51",
+    "cluster": 0
+  },
+  {
+    "id": "0082",
+    "age": "38",
+    "income": "54",
+    "score": "55",
+    "cluster": 0
+  },
+  {
+    "id": "0083",
+    "age": "67",
+    "income": "54",
+    "score": "41",
+    "cluster": 0
+  },
+  {
+    "id": "0084",
+    "age": "46",
+    "income": "54",
+    "score": "44",
+    "cluster": 0
+  },
+  {
+    "id": "0085",
+    "age": "21",
+    "income": "54",
+    "score": "57",
+    "cluster": 0
+  },
+  {
+    "id": "0086",
+    "age": "48",
+    "income": "54",
+    "score": "46",
+    "cluster": 0
+  },
+  {
+    "id": "0087",
+    "age": "55",
+    "income": "57",
+    "score": "58",
+    "cluster": 0
+  },
+  {
+    "id": "0088",
+    "age": "22",
+    "income": "57",
+    "score": "55",
+    "cluster": 0
+  },
+  {
+    "id": "0089",
+    "age": "34",
+    "income": "58",
+    "score": "60",
+    "cluster": 0
+  },
+  {
+    "id": "0090",
+    "age": "50",
+    "income": "58",
+    "score": "46",
+    "cluster": 0
+  },
+  {
+    "id": "0091",
+    "age": "68",
+    "income": "59",
+    "score": "55",
+    "cluster": 0
+  },
+  {
+    "id": "0092",
+    "age": "18",
+    "income": "59",
+    "score": "41",
+    "cluster": 0
+  },
+  {
+    "id": "0093",
+    "age": "48",
+    "income": "60",
+    "score": "49",
+    "cluster": 0
+  },
+  {
+    "id": "0094",
+    "age": "40",
+    "income": "60",
+    "score": "40",
+    "cluster": 0
+  },
+  {
+    "id": "0095",
+    "age": "32",
+    "income": "60",
+    "score": "42",
+    "cluster": 0
+  },
+  {
+    "id": "0096",
+    "age": "24",
+    "income": "60",
+    "score": "52",
+    "cluster": 0
+  },
+  {
+    "id": "0097",
+    "age": "47",
+    "income": "60",
+    "score": "47",
+    "cluster": 0
+  },
+  {
+    "id": "0098",
+    "age": "27",
+    "income": "60",
+    "score": "50",
+    "cluster": 0
+  },
+  {
+    "id": "0099",
+    "age": "48",
+    "income": "61",
+    "score": "42",
+    "cluster": 0
+  },
+  {
+    "id": "0100",
+    "age": "20",
+    "income": "61",
+    "score": "49",
+    "cluster": 0
+  },
+  {
+    "id": "0101",
+    "age": "23",
+    "income": "62",
+    "score": "41",
+    "cluster": 0
+  },
+  {
+    "id": "0102",
+    "age": "49",
+    "income": "62",
+    "score": "48",
+    "cluster": 0
+  },
+  {
+    "id": "0103",
+    "age": "67",
+    "income": "62",
+    "score": "59",
+    "cluster": 0
+  },
+  {
+    "id": "0104",
+    "age": "26",
+    "income": "62",
+    "score": "55",
+    "cluster": 0
+  },
+  {
+    "id": "0105",
+    "age": "49",
+    "income": "62",
+    "score": "56",
+    "cluster": 0
+  },
+  {
+    "id": "0106",
+    "age": "21",
+    "income": "62",
+    "score": "42",
+    "cluster": 0
+  },
+  {
+    "id": "0107",
+    "age": "66",
+    "income": "63",
+    "score": "50",
+    "cluster": 0
+  },
+  {
+    "id": "0108",
+    "age": "54",
+    "income": "63",
+    "score": "46",
+    "cluster": 0
+  },
+  {
+    "id": "0109",
+    "age": "68",
+    "income": "63",
+    "score": "43",
+    "cluster": 0
+  },
+  {
+    "id": "0110",
+    "age": "66",
+    "income": "63",
+    "score": "48",
+    "cluster": 0
+  },
+  {
+    "id": "0111",
+    "age": "65",
+    "income": "63",
+    "score": "52",
+    "cluster": 0
+  },
+  {
+    "id": "0112",
+    "age": "19",
+    "income": "63",
+    "score": "54",
+    "cluster": 0
+  },
+  {
+    "id": "0113",
+    "age": "38",
+    "income": "64",
+    "score": "42",
+    "cluster": 0
+  },
+  {
+    "id": "0114",
+    "age": "19",
+    "income": "64",
+    "score": "46",
+    "cluster": 0
+  },
+  {
+    "id": "0115",
+    "age": "18",
+    "income": "65",
+    "score": "48",
+    "cluster": 0
+  },
+  {
+    "id": "0116",
+    "age": "19",
+    "income": "65",
+    "score": "50",
+    "cluster": 0
+  },
+  {
+    "id": "0117",
+    "age": "63",
+    "income": "65",
+    "score": "43",
+    "cluster": 0
+  },
+  {
+    "id": "0118",
+    "age": "49",
+    "income": "65",
+    "score": "59",
+    "cluster": 0
+  },
+  {
+    "id": "0119",
+    "age": "51",
+    "income": "67",
+    "score": "43",
+    "cluster": 0
+  },
+  {
+    "id": "0120",
+    "age": "50",
+    "income": "67",
+    "score": "57",
+    "cluster": 0
+  },
+  {
+    "id": "0121",
+    "age": "27",
+    "income": "67",
+    "score": "56",
+    "cluster": 0
+  },
+  {
+    "id": "0122",
+    "age": "38",
+    "income": "67",
+    "score": "40",
+    "cluster": 0
+  },
+  {
+    "id": "0123",
+    "age": "40",
+    "income": "69",
+    "score": "58",
+    "cluster": 0
+  },
+  {
+    "id": "0124",
+    "age": "39",
+    "income": "69",
+    "score": "91",
+    "cluster": 1
+  },
+  {
+    "id": "0125",
+    "age": "23",
+    "income": "70",
+    "score": "29",
+    "cluster": 2
+  },
+  {
+    "id": "0126",
+    "age": "31",
+    "income": "70",
+    "score": "77",
+    "cluster": 1
+  },
+  {
+    "id": "0127",
+    "age": "43",
+    "income": "71",
+    "score": "35",
+    "cluster": 0
+  },
+  {
+    "id": "0128",
+    "age": "40",
+    "income": "71",
+    "score": "95",
+    "cluster": 1
+  },
+  {
+    "id": "0129",
+    "age": "59",
+    "income": "71",
+    "score": "11",
+    "cluster": 2
+  },
+  {
+    "id": "0130",
+    "age": "38",
+    "income": "71",
+    "score": "75",
+    "cluster": 1
+  },
+  {
+    "id": "0131",
+    "age": "47",
+    "income": "71",
+    "score": "9",
+    "cluster": 2
+  },
+  {
+    "id": "0132",
+    "age": "39",
+    "income": "71",
+    "score": "75",
+    "cluster": 1
+  },
+  {
+    "id": "0133",
+    "age": "25",
+    "income": "72",
+    "score": "34",
+    "cluster": 0
+  },
+  {
+    "id": "0134",
+    "age": "31",
+    "income": "72",
+    "score": "71",
+    "cluster": 1
+  },
+  {
+    "id": "0135",
+    "age": "20",
+    "income": "73",
+    "score": "5",
+    "cluster": 2
+  },
+  {
+    "id": "0136",
+    "age": "29",
+    "income": "73",
+    "score": "88",
+    "cluster": 1
+  },
+  {
+    "id": "0137",
+    "age": "44",
+    "income": "73",
+    "score": "7",
+    "cluster": 2
+  },
+  {
+    "id": "0138",
+    "age": "32",
+    "income": "73",
+    "score": "73",
+    "cluster": 1
+  },
+  {
+    "id": "0139",
+    "age": "19",
+    "income": "74",
+    "score": "10",
+    "cluster": 2
+  },
+  {
+    "id": "0140",
+    "age": "35",
+    "income": "74",
+    "score": "72",
+    "cluster": 1
+  },
+  {
+    "id": "0141",
+    "age": "57",
+    "income": "75",
+    "score": "5",
+    "cluster": 2
+  },
+  {
+    "id": "0142",
+    "age": "32",
+    "income": "75",
+    "score": "93",
+    "cluster": 1
+  },
+  {
+    "id": "0143",
+    "age": "28",
+    "income": "76",
+    "score": "40",
+    "cluster": 0
+  },
+  {
+    "id": "0144",
+    "age": "32",
+    "income": "76",
+    "score": "87",
+    "cluster": 1
+  },
+  {
+    "id": "0145",
+    "age": "25",
+    "income": "77",
+    "score": "12",
+    "cluster": 2
+  },
+  {
+    "id": "0146",
+    "age": "28",
+    "income": "77",
+    "score": "97",
+    "cluster": 1
+  },
+  {
+    "id": "0147",
+    "age": "48",
+    "income": "77",
+    "score": "36",
+    "cluster": 2
+  },
+  {
+    "id": "0148",
+    "age": "32",
+    "income": "77",
+    "score": "74",
+    "cluster": 1
+  },
+  {
+    "id": "0149",
+    "age": "34",
+    "income": "78",
+    "score": "22",
+    "cluster": 2
+  },
+  {
+    "id": "0150",
+    "age": "34",
+    "income": "78",
+    "score": "90",
+    "cluster": 1
+  },
+  {
+    "id": "0151",
+    "age": "43",
+    "income": "78",
+    "score": "17",
+    "cluster": 2
+  },
+  {
+    "id": "0152",
+    "age": "39",
+    "income": "78",
+    "score": "88",
+    "cluster": 1
+  },
+  {
+    "id": "0153",
+    "age": "44",
+    "income": "78",
+    "score": "20",
+    "cluster": 2
+  },
+  {
+    "id": "0154",
+    "age": "38",
+    "income": "78",
+    "score": "76",
+    "cluster": 1
+  },
+  {
+    "id": "0155",
+    "age": "47",
+    "income": "78",
+    "score": "16",
+    "cluster": 2
+  },
+  {
+    "id": "0156",
+    "age": "27",
+    "income": "78",
+    "score": "89",
+    "cluster": 1
+  },
+  {
+    "id": "0157",
+    "age": "37",
+    "income": "78",
+    "score": "1",
+    "cluster": 2
+  },
+  {
+    "id": "0158",
+    "age": "30",
+    "income": "78",
+    "score": "78",
+    "cluster": 1
+  },
+  {
+    "id": "0159",
+    "age": "34",
+    "income": "78",
+    "score": "1",
+    "cluster": 2
+  },
+  {
+    "id": "0160",
+    "age": "30",
+    "income": "78",
+    "score": "73",
+    "cluster": 1
+  },
+  {
+    "id": "0161",
+    "age": "56",
+    "income": "79",
+    "score": "35",
+    "cluster": 2
+  },
+  {
+    "id": "0162",
+    "age": "29",
+    "income": "79",
+    "score": "83",
+    "cluster": 1
+  },
+  {
+    "id": "0163",
+    "age": "19",
+    "income": "81",
+    "score": "5",
+    "cluster": 2
+  },
+  {
+    "id": "0164",
+    "age": "31",
+    "income": "81",
+    "score": "93",
+    "cluster": 1
+  },
+  {
+    "id": "0165",
+    "age": "50",
+    "income": "85",
+    "score": "26",
+    "cluster": 2
+  },
+  {
+    "id": "0166",
+    "age": "36",
+    "income": "85",
+    "score": "75",
+    "cluster": 1
+  },
+  {
+    "id": "0167",
+    "age": "42",
+    "income": "86",
+    "score": "20",
+    "cluster": 2
+  },
+  {
+    "id": "0168",
+    "age": "33",
+    "income": "86",
+    "score": "95",
+    "cluster": 1
+  },
+  {
+    "id": "0169",
+    "age": "36",
+    "income": "87",
+    "score": "27",
+    "cluster": 2
+  },
+  {
+    "id": "0170",
+    "age": "32",
+    "income": "87",
+    "score": "63",
+    "cluster": 1
+  },
+  {
+    "id": "0171",
+    "age": "40",
+    "income": "87",
+    "score": "13",
+    "cluster": 2
+  },
+  {
+    "id": "0172",
+    "age": "28",
+    "income": "87",
+    "score": "75",
+    "cluster": 1
+  },
+  {
+    "id": "0173",
+    "age": "36",
+    "income": "87",
+    "score": "10",
+    "cluster": 2
+  },
+  {
+    "id": "0174",
+    "age": "36",
+    "income": "87",
+    "score": "92",
+    "cluster": 1
+  },
+  {
+    "id": "0175",
+    "age": "52",
+    "income": "88",
+    "score": "13",
+    "cluster": 2
+  },
+  {
+    "id": "0176",
+    "age": "30",
+    "income": "88",
+    "score": "86",
+    "cluster": 1
+  },
+  {
+    "id": "0177",
+    "age": "58",
+    "income": "88",
+    "score": "15",
+    "cluster": 2
+  },
+  {
+    "id": "0178",
+    "age": "27",
+    "income": "88",
+    "score": "69",
+    "cluster": 1
+  },
+  {
+    "id": "0179",
+    "age": "59",
+    "income": "93",
+    "score": "14",
+    "cluster": 2
+  },
+  {
+    "id": "0180",
+    "age": "35",
+    "income": "93",
+    "score": "90",
+    "cluster": 1
+  },
+  {
+    "id": "0181",
+    "age": "37",
+    "income": "97",
+    "score": "32",
+    "cluster": 2
+  },
+  {
+    "id": "0182",
+    "age": "32",
+    "income": "97",
+    "score": "86",
+    "cluster": 1
+  },
+  {
+    "id": "0183",
+    "age": "46",
+    "income": "98",
+    "score": "15",
+    "cluster": 2
+  },
+  {
+    "id": "0184",
+    "age": "29",
+    "income": "98",
+    "score": "88",
+    "cluster": 1
+  },
+  {
+    "id": "0185",
+    "age": "41",
+    "income": "99",
+    "score": "39",
+    "cluster": 2
+  },
+  {
+    "id": "0186",
+    "age": "30",
+    "income": "99",
+    "score": "97",
+    "cluster": 1
+  },
+  {
+    "id": "0187",
+    "age": "54",
+    "income": "101",
+    "score": "24",
+    "cluster": 2
+  },
+  {
+    "id": "0188",
+    "age": "28",
+    "income": "101",
+    "score": "68",
+    "cluster": 1
+  },
+  {
+    "id": "0189",
+    "age": "41",
+    "income": "103",
+    "score": "17",
+    "cluster": 2
+  },
+  {
+    "id": "0190",
+    "age": "36",
+    "income": "103",
+    "score": "85",
+    "cluster": 1
+  },
+  {
+    "id": "0191",
+    "age": "34",
+    "income": "103",
+    "score": "23",
+    "cluster": 2
+  },
+  {
+    "id": "0192",
+    "age": "32",
+    "income": "103",
+    "score": "69",
+    "cluster": 1
+  },
+  {
+    "id": "0193",
+    "age": "33",
+    "income": "113",
+    "score": "8",
+    "cluster": 2
+  },
+  {
+    "id": "0194",
+    "age": "38",
+    "income": "113",
+    "score": "91",
+    "cluster": 1
+  },
+  {
+    "id": "0195",
+    "age": "47",
+    "income": "120",
+    "score": "16",
+    "cluster": 2
+  },
+  {
+    "id": "0196",
+    "age": "35",
+    "income": "120",
+    "score": "79",
+    "cluster": 1
+  },
+  {
+    "id": "0197",
+    "age": "45",
+    "income": "126",
+    "score": "28",
+    "cluster": 2
+  },
+  {
+    "id": "0198",
+    "age": "32",
+    "income": "126",
+    "score": "74",
+    "cluster": 1
+  },
+  {
+    "id": "0199",
+    "age": "32",
+    "income": "137",
+    "score": "18",
+    "cluster": 2
+  },
+  {
+    "id": "0200",
+    "age": "30",
+    "income": "137",
+    "score": "83",
+    "cluster": 1
+  }
+]
