@@ -1,0 +1,22 @@
+[
+  {
+    "cluster": 0,
+    "task": "Email budget-friendly coupons"
+  },
+  {
+    "cluster": 1,
+    "task": "Launch VIP loyalty program"
+  },
+  {
+    "cluster": 2,
+    "task": "Send premium upsell offers"
+  },
+  {
+    "cluster": 3,
+    "task": "Invite to customer survey"
+  },
+  {
+    "cluster": 4,
+    "task": "Offer new-signup discount"
+  }
+]
