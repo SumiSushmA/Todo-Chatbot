@@ -1,292 +1,280 @@
-// 'use client'
-// import { useEffect, useState } from 'react';
-
-// type Task = { id:number; text:string; done:boolean }
-
-// export default function TasksPage() {
-//   const [tasks, setTasks] = useState<Task[]>([])
-//   const [text, setText] = useState('')
-
-//   useEffect(() => {
-//     fetch('/api/tasks').then(r=>r.json()).then(setTasks)
-//   }, [])
-
-//   const add = async () => {
-//     if (!text.trim()) return
-//     const res = await fetch('/api/tasks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text.trim()})})
-//     const t = await res.json()
-//     setTasks(prev=>[...prev,t])
-//     setText('')
-//   }
-
-//   const toggle = async (t:Task) => {
-//     if (!confirm(`Mark this task as ${t.done? 'not done':'done'}?`)) return
-//     const res = await fetch('/api/tasks',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:t.id,done:!t.done})})
-//     const u = await res.json()
-//     setTasks(prev=>prev.map(x=>x.id===u.id?u:x))
-//   }
-
-//   const edit = async (t:Task) => {
-//     const txt = prompt('Edit task',t.text)
-//     if (txt!=null&&txt.trim()){
-//       if (!confirm('Save changes?')) return
-//       const res = await fetch('/api/tasks',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:t.id,text:txt.trim()})})
-//       const u = await res.json()
-//       setTasks(prev=>prev.map(x=>x.id===u.id?u:x))
-//     }
-//   }
-
-//   const del = async (id:number) => {
-//     if (!confirm('Delete this task?')) return
-//     await fetch(`/api/tasks?id=${id}`,{method:'DELETE'})
-//     setTasks(prev=>prev.filter(x=>x.id!==id))
-//   }
-
-//   return (
-//     <div>
-//       <h2 style={{fontSize:20,marginBottom:16}}>Your Tasks</h2>
-//       <div style={{display:'flex',marginBottom:16}}>
-//         <input value={text} onChange={e=>setText(e.target.value)} placeholder="New task…" style={{flex:1,padding:8,border:'1px solid #ccc',borderRadius:4}} />
-//         <button onClick={add} style={{marginLeft:8,background:'#48bb78',color:'#fff',padding:'0 16px',border:'none',borderRadius:4}}>Add</button>
-//       </div>
-//       <ul style={{listStyle:'none',padding:0}}>
-//         {tasks.map(t=>(
-//           <li key={t.id} style={{display:'flex',alignItems:'center',marginBottom:8}}>
-//             <input type="checkbox" checked={t.done} onChange={()=>toggle(t)} />
-//             <span style={{marginLeft:8,flex:1,textDecoration:t.done?'line-through':'none'}}>{t.text}</span>
-//             <button onClick={()=>edit(t)} style={{background:'none',border:'none',color:'#d69e2e',cursor:'pointer',marginRight:8}}>Edit</button>
-//             <button onClick={()=>del(t.id)} style={{background:'none',border:'none',color:'#e53e3e',cursor:'pointer'}}>✕</button>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   )
-// }
-
 // src/app/dashboard/tasks/page.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css'
+import { Circle } from 'react-feather'
 import { v4 as uuidv4 } from 'uuid'
 
-type Priority = 'high' | 'medium' | 'low'
+type Priority = 'High' | 'Medium' | 'Low'
+type Status   = 'Not Started' | 'In Progress' | 'Completed'
 
 interface Task {
   id: string
   title: string
-  priority: Priority
-  due?: string      // ISO datetime
   notes?: string
-  attachments: string[]
-  completed: boolean
-}
-
-const PRIORITY_BADGES: Record<Priority, string> = {
-  high:   'bg-red-200 border-red-400 text-red-800',
-  medium: 'bg-orange-200 border-orange-400 text-orange-800',
-  low:    'bg-green-200 border-green-400 text-green-800',
+  due?: string
+  priority: Priority
+  status: Status
+  image?: string
+  created: string
 }
 
 export default function TasksPage() {
-  // form state
-  const [title, setTitle] = useState('')
-  const [priority, setPriority] = useState<Priority>('medium')
-  const [due, setDue] = useState('')
-  const [notes, setNotes] = useState('')
-  const [files, setFiles] = useState<FileList | null>(null)
+  // — Form state —
+  const [showForm, setShowForm] = useState(false)
+  const [title,   setTitle]    = useState('')
+  const [notes,   setNotes]    = useState('')
+  const [due,     setDue]      = useState('')
+  const [priority,setPriority] = useState<Priority>('Medium')
+  const [status,  setStatus]   = useState<Status>('Not Started')
+  const [file,    setFile]     = useState<File | null>(null)
 
-  // tasks state
-  const [tasks, setTasks] = useState<Task[]>([])
+  // — Tasks + filter —
+  const [tasks,  setTasks]  = useState<Task[]>([])
+  const [filter, setFilter] = useState('')
 
-  // load on mount
+  // 1️⃣ Load saved tasks on mount
   useEffect(() => {
-    const raw = localStorage.getItem('todo_tasks')
+    const raw = window.localStorage.getItem('todo_tasks')
     if (raw) {
       try {
         setTasks(JSON.parse(raw))
-      } catch {
-        console.error('failed to parse tasks')
-      }
+      } catch (_) {}
     }
   }, [])
 
-  // save on change
+  // 2️⃣ Save whenever tasks change
   useEffect(() => {
-    localStorage.setItem('todo_tasks', JSON.stringify(tasks))
+    window.localStorage.setItem('todo_tasks', JSON.stringify(tasks))
   }, [tasks])
 
-  const addTask = () => {
+  // — Stats for graphs —
+  const counts = {
+    Completed:     tasks.filter(t=>t.status==='Completed').length,
+    'In Progress': tasks.filter(t=>t.status==='In Progress').length,
+    'Not Started': tasks.filter(t=>t.status==='Not Started').length,
+  }
+  const total = tasks.length || 1
+
+  // — Create new task —
+  const createTask = () => {
     if (!title.trim()) return
-    const newTask: Task = {
+    const imgUrl = file ? URL.createObjectURL(file) : undefined
+    const t: Task = {
       id: uuidv4(),
       title: title.trim(),
-      priority,
+      notes: notes.trim() || undefined,
       due: due || undefined,
-      notes: notes || undefined,
-      attachments: files ? Array.from(files).map(f => f.name) : [],
-      completed: false,
+      priority, status,
+      image: imgUrl,
+      created: new Date().toISOString(),
     }
-    setTasks([newTask, ...tasks])
+    setTasks([t, ...tasks])
     // reset form
-    setTitle('')
-    setPriority('medium')
-    setDue('')
-    setNotes('')
-    setFiles(null)
+    setTitle(''); setNotes(''); setDue('')
+    setPriority('Medium'); setStatus('Not Started'); setFile(null)
+    setShowForm(false)
   }
 
-  const deleteTask = (id: string) => {
-    if (confirm('Are you sure you want to delete this task?')) {
-      setTasks(tasks.filter(t => t.id !== id))
-    }
-  }
+  const deleteTask = (id:string) => setTasks(tasks.filter(t=>t.id!==id))
 
-  const toggleComplete = (id: string) => {
-    setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t))
+  const markComplete = (id:string) => {
+    if (!confirm('Mark this task as completed?')) return
+    setTasks(tasks.map(t=>t.id===id?{...t,status:'Completed'}:t))
   }
 
   return (
-    <div className="h-full p-6 bg-white rounded-lg shadow flex flex-col space-y-6">
-      {/* — Add Task Form — */}
-      <div className="bg-gray-50 p-5 rounded-lg border space-y-4">
+    <div className="flex space-x-6 p-6">
+      {/* — Left Column: To-Do & Form — */}
+      <div className="flex-1 space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-semibold">To-Do</h2>
+          <button
+            onClick={()=>setShowForm(!showForm)}
+            className="text-pink-600 hover:underline"
+          >
+            {showForm ? 'Cancel' : '+ Add Task'}
+          </button>
+        </div>
+
+        {showForm && (
+          <div className="bg-white p-4 rounded shadow space-y-3 border">
+            <input
+              type="text" placeholder="Title…"
+              value={title} onChange={e=>setTitle(e.target.value)}
+              className="w-full border px-2 py-1 rounded"
+            />
+            <textarea
+              placeholder="Notes…"
+              value={notes} onChange={e=>setNotes(e.target.value)}
+              rows={2}
+              className="w-full border px-2 py-1 rounded"
+            />
+            <div className="flex space-x-3 items-center">
+              <input
+                type="datetime-local"
+                value={due} onChange={e=>setDue(e.target.value)}
+                className="border px-2 py-1 rounded"
+              />
+              <select
+                value={priority} onChange={e=>setPriority(e.target.value as Priority)}
+                className="border px-2 py-1 rounded"
+              >
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+              </select>
+              <select
+                value={status} onChange={e=>setStatus(e.target.value as Status)}
+                className="border px-2 py-1 rounded"
+              >
+                <option>Not Started</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+              </select>
+              <input
+                type="file"
+                onChange={e=>setFile(e.target.files?.[0]||null)}
+              />
+            </div>
+            <button
+              onClick={createTask}
+              className="bg-blue-500 text-white px-4 py-1 rounded"
+            >
+              Create
+            </button>
+          </div>
+        )}
+
         <input
-          type="text"
-          placeholder="Task title…"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          className="w-full border p-2 rounded"
+          type="text" placeholder="Search tasks…"
+          value={filter} onChange={e=>setFilter(e.target.value)}
+          className="w-full border px-3 py-2 rounded"
         />
 
-        <div className="flex space-x-4">
-          <div>
-            <label className="block mb-1">Priority</label>
-            <select
-              value={priority}
-              onChange={e => setPriority(e.target.value as Priority)}
-              className="border p-2 rounded"
+        <div className="space-y-2">
+          {tasks
+            .filter(t=>t.title.toLowerCase().includes(filter.toLowerCase()))
+            .map(t=>(
+            <div
+              key={t.id}
+              className="flex items-center justify-between bg-white p-3 rounded shadow border"
             >
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
-            </select>
-          </div>
-          <div>
-            <label className="block mb-1">Due date & time</label>
-            <input
-              type="datetime-local"
-              value={due}
-              onChange={e => setDue(e.target.value)}
-              className="border p-2 rounded"
-            />
-          </div>
+              <div>
+                <h3 className="font-medium">{t.title}</h3>
+                <div className="flex text-sm text-gray-600 space-x-4 mt-1 items-center">
+                  <Circle
+                    size={14}
+                    className={ t.status==='Completed'?'text-green-500':'text-red-500' }
+                  />
+                  <span>{new Date(t.due||t.created).toLocaleString()}</span>
+                  <span>· {t.priority}</span>
+                  <span>· {t.status}</span>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                {t.image && (
+                  <img
+                    src={t.image}
+                    className="h-12 w-12 rounded object-cover"
+                  />
+                )}
+                {t.status!=='Completed' && (
+                  <button
+                    onClick={()=>markComplete(t.id)}
+                    className="bg-green-500 text-white px-3 py-1 rounded"
+                  >
+                    Complete
+                  </button>
+                )}
+                <button
+                  onClick={()=>deleteTask(t.id)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  🗑
+                </button>
+              </div>
+            </div>
+          ))}
+          {tasks.filter(t=>t.title.toLowerCase().includes(filter.toLowerCase())).length===0 && (
+            <p className="text-gray-500">No matching tasks.</p>
+          )}
         </div>
-
-        <div>
-          <label className="block mb-1">Notes</label>
-          <textarea
-            value={notes}
-            onChange={e => setNotes(e.target.value)}
-            rows={2}
-            className="w-full border p-2 rounded"
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1">Attachments</label>
-          <input
-            type="file"
-            multiple
-            onChange={e => setFiles(e.target.files)}
-          />
-        </div>
-
-        <button
-          onClick={addTask}
-          className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Add Task
-        </button>
       </div>
 
-      {/* — Tasks List — */}
-      <div className="flex-1 overflow-y-auto space-y-4">
-        {tasks.length === 0 && (
-          <p className="text-gray-500">You have no tasks yet.</p>
-        )}
-        {tasks.map(task => {
-          const isOverdue = task.due
-            ? new Date(task.due) < new Date() && !task.completed
-            : false
-
-          return (
-            <div
-              key={task.id}
-              className="relative bg-white p-5 rounded-lg border shadow"
-            >
-              {/* Delete */}
-              <button
-                onClick={() => deleteTask(task.id)}
-                className="absolute top-3 right-3 text-red-500 hover:text-red-700 text-sm"
-              >
-                Delete
-              </button>
-
-              {/* Completed toggle */}
-              <label className="flex items-center space-x-2 mb-2">
-                <input
-                  type="checkbox"
-                  checked={task.completed}
-                  onChange={() => toggleComplete(task.id)}
-                />
-                <span
-                  className={`text-lg font-medium ${
-                    task.completed ? 'line-through opacity-50' : ''
-                  }`}
-                >
-                  {task.title}
+      {/* — Right Column: Stats, Calendar, Completed — */}
+      <div className="w-80 space-y-4">
+        {/* Stats */}
+        <div className="bg-white p-4 rounded shadow border">
+          <h4 className="font-semibold mb-2">Task Status</h4>
+          <div className="flex justify-between">
+            {(['Completed','In Progress','Not Started'] as const).map(key=>(
+              <div key={key} className="flex flex-col items-center">
+                <svg className="w-16 h-16" viewBox="0 0 36 36">
+                  <path
+                    className="text-gray-200"
+                    strokeWidth="4"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845
+                       a 15.9155 15.9155 0 0 1 0 31.831
+                       a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    className={
+                      key==='Completed'    ? 'text-green-500' :
+                      key==='In Progress'  ? 'text-blue-500'  :
+                                             'text-red-500'
+                    }
+                    strokeDasharray={`${(counts[key]/total)*100} 100`}
+                    strokeWidth="4"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845
+                       a 15.9155 15.9155 0 0 1 0 31.831
+                       a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                </svg>
+                <span className="text-sm mt-1">{key}</span>
+                <span className="text-xs text-gray-500">
+                  {Math.round((counts[key]/total)*100)}%
                 </span>
-              </label>
+              </div>
+            ))}
+          </div>
+        </div>
 
-              {/* Priority & Due */}
-              <div className="flex items-center space-x-3 text-sm mb-2">
-                <span
-                  className={`px-2 py-0.5 border rounded ${PRIORITY_BADGES[
-                    task.priority
-                  ]}`}
-                >
-                  {task.priority.charAt(0).toUpperCase() +
-                    task.priority.slice(1)}
-                </span>
-                {task.due && (
-                  <span className="text-gray-600">
-                    Due: {new Date(task.due).toLocaleString()}
+        {/* Calendar */}
+        <div className="bg-white p-4 rounded shadow border">
+          <h4 className="font-semibold mb-2">Calendar</h4>
+          <Calendar />
+        </div>
+
+        {/* Completed Tasks */}
+        <div className="bg-white p-4 rounded shadow border">
+          <h4 className="font-semibold mb-2">Completed Tasks</h4>
+          {tasks.filter(t=>t.status==='Completed').length===0
+            ? <p className="text-gray-500">No completed tasks yet.</p>
+            : tasks.filter(t=>t.status==='Completed').map(t=>(
+              <div key={t.id} className="flex items-center justify-between mb-2">
+                <div>
+                  <h5 className="font-medium">{t.title}</h5>
+                  <span className="text-xs text-gray-500">
+                    Done on {new Date(t.created).toLocaleDateString()}
                   </span>
-                )}
-                {isOverdue && (
-                  <span className="text-red-600 font-semibold">OVERDUE</span>
+                </div>
+                {t.image && (
+                  <img
+                    src={t.image}
+                    className="h-10 w-10 rounded object-cover"
+                  />
                 )}
               </div>
-
-              {/* Notes */}
-              {task.notes && (
-                <p className="text-sm bg-gray-50 p-3 rounded mb-2">
-                  {task.notes}
-                </p>
-              )}
-
-              {/* Attachments */}
-              {task.attachments.length > 0 && (
-                <ul className="text-sm space-y-1">
-                  {task.attachments.map((n, i) => (
-                    <li key={i} className="underline">
-                      {n}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )
-        })}
+            ))
+          }
+        </div>
       </div>
     </div>
   )
