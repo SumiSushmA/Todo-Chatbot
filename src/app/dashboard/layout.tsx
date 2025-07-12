@@ -1,32 +1,4 @@
-// // =================================================================
-// // File: src/app/dashboard/layout.tsx
-// // =================================================================
-// import Link from 'next/link'
-// import React from 'react'
-
-// export const metadata = { title: 'Dashboard' }
-
-// export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-//   return (
-//     <div className="flex h-screen">
-//       {/* Sidebar navigation */}
-//       <nav className="w-1/4 border-r bg-gray-50 p-6 space-y-4">
-//         <Link href="/dashboard/chat" className="block text-lg font-medium text-gray-700 hover:text-blue-600">Chat</Link>
-//         <Link href="/dashboard/tasks" className="block text-lg font-medium text-gray-700 hover:text-blue-600">Tasks</Link>
-//         <Link href="/dashboard/history" className="block text-lg font-medium text-gray-700 hover:text-blue-600">History</Link>
-//         <Link href="/dashboard/profile" className="block text-lg font-medium text-gray-700 hover:text-blue-600">Profile</Link>
-//         <Link href="/api/logout" className="block text-lg font-medium text-red-600 hover:text-red-800 mt-6">Logout</Link>
-//       </nav>
-
-//       {/* Main content area */}
-//       <main className="flex-1 overflow-auto p-6 bg-white">
-//         {children}
-//       </main>
-//     </div>
-//   )
-// }
-
-// File: src/app/dashboard/layout.tsx
+// src/app/dashboard/layout.tsx
 'use client'
 
 import Link from 'next/link'
