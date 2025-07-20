@@ -1,75 +1,67 @@
 // src/app/dashboard/layout.tsx
 'use client'
 
+import { LogoutButton } from '@/components/LogoutButton'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const pathname = usePathname()
-  const router = useRouter()
 
-  const navItems = [
-    { label: 'Chat',    href: '/dashboard/chat'    },
-    { label: 'Tasks',   href: '/dashboard/tasks'   },
-    { label: 'History', href: '/dashboard/history' },
-    { label: 'Profile', href: '/dashboard/profile' },
+  const navItems: { label: string; href: string }[] = [
+    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Chat',      href: '/dashboard/chat' },
+    { label: 'Tasks',     href: '/dashboard/tasks' },
+    { label: 'History',   href: '/dashboard/history' },
+    { label: 'Profile',   href: '/dashboard/profile' },
   ]
 
-  const handleLogout = async () => {
-    if (!confirm('Do you really want to log out?')) {
-      return
-    }
-
-    try {
-      // Call your logout endpoint to clear session/cookies
-      await fetch('/api/logout', { method: 'POST' })
-    } catch (err) {
-      console.error('Logout request failed', err)
-    }
-
-    // Finally, send the user to the login page
-    router.push('/login')
-  }
+  const linkBase = 'block px-3 py-2 rounded transition-colors duration-150'
 
   return (
-    <div className="flex h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-blue-50 via-white to-gray-50 p-6 space-y-4 shadow-lg">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-blue-600">Todolist Chatbot</h2>
-        </div>
-        <nav className="space-y-2">
+    <div className="flex min-h-screen">
+      {/* Sidebar (white) */}
+      <nav className="w-60 bg-white border-r border-gray-200 p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          Todolist Chatbot
+        </h2>
+        <ul className="space-y-2">
           {navItems.map(({ label, href }) => {
-            const isActive = pathname.startsWith(href)
+            const isActive =
+              href === '/dashboard'
+                ? pathname === '/dashboard'
+                : pathname.startsWith(href)
+
             return (
-              <Link
-                key={href}
-                href={href}
-                className={
-                  `block px-4 py-2 rounded-lg font-medium transition ` +
-                  (isActive
-                    ? 'bg-blue-500 text-white'
-                    : 'text-gray-700 hover:bg-blue-100')
-                }
-              >
-                {label}
-              </Link>
+              <li key={href}>
+                <Link
+                  href={href}
+                  className={
+                    linkBase +
+                    (isActive
+                      ? ' bg-blue-100 text-blue-600'
+                      : ' text-gray-700 hover:bg-gray-100 hover:text-gray-900')
+                  }
+                >
+                  {label}
+                </Link>
+              </li>
             )
           })}
-        </nav>
-        <div className="mt-auto">
-          <button
-            onClick={handleLogout}
-            className="w-full text-left px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
-          >
-            Logout
-          </button>
-        </div>
-      </aside>
 
-      {/* Main content */}
-      <main className="flex-1 overflow-auto bg-white p-6">
+          <li>
+            <LogoutButton className={linkBase + ' text-red-600 hover:bg-red-50'} />
+          </li>
+        </ul>
+      </nav>
+
+      {/* Main content area (also white, with dark text) */}
+      <main className="flex-1 bg-white text-gray-800 p-6">
         {children}
       </main>
     </div>
