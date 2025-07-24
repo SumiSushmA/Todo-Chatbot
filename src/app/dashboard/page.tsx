@@ -1,7 +1,7 @@
 // src/app/dashboard/page.tsx
 'use client'
 
-import { Task } from '@/lib/tasks'
+import { Task } from '@/lib/types'
 import { useEffect, useState } from 'react'
 import {
   Bar,
@@ -19,6 +19,7 @@ import {
 
 export default function DashboardPage() {
   const [tasks, setTasks] = useState<Task[]>([])
+
   useEffect(() => {
     fetch('/api/tasks')
       .then(r => r.json())
@@ -27,8 +28,14 @@ export default function DashboardPage() {
   }, [])
 
   // 1) Priority counts
-  const priCounts = { Low: 0, Medium: 0, High: 0 }
-  tasks.forEach(t => priCounts[t.priority]++)
+  const priCounts: Record<Task['priority'], number> = {
+    Low: 0,
+    Medium: 0,
+    High: 0,
+  }
+  tasks.forEach(t => {
+    priCounts[t.priority]++
+  })
   const barData = [
     { name: 'Low',    count: priCounts.Low },
     { name: 'Medium', count: priCounts.Medium },
@@ -51,13 +58,13 @@ export default function DashboardPage() {
     const onDay = tasks.filter(t => t.dueDateTime.startsWith(day))
     return {
       day: day.slice(5),
-      NotStarted:   onDay.filter(t => t.status === 'not-started').length,
-      InProgress:   onDay.filter(t => t.status === 'in-progress').length,
-      Completed:    onDay.filter(t => t.status === 'completed').length,
+      NotStarted: onDay.filter(t => t.status === 'not-started').length,
+      InProgress: onDay.filter(t => t.status === 'in-progress').length,
+      Completed:  onDay.filter(t => t.status === 'completed').length,
     }
   })
 
-  // 3) Status %
+  // 3) Status breakdown percent
   const total = tasks.length || 1
   const stCounts = {
     Completed:  tasks.filter(t => t.status === 'completed').length,
@@ -67,7 +74,7 @@ export default function DashboardPage() {
   const percentData = [
     {
       label: 'Completed',
-      percent: Math.round((stCounts.Completed / total) * 100),
+      percent: Math.round((stCounts.Completed  / total) * 100),
       color: '#10B981',
     },
     {
@@ -86,8 +93,7 @@ export default function DashboardPage() {
     <div className="p-6 bg-gray-900 text-white min-h-screen space-y-6">
       <h1 className="text-3xl font-bold">Dashboard</h1>
       <div className="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 gap-6">
-
-        {/* ─── Tasks by Priority ────────────────────── */}
+        {/* Tasks by Priority */}
         <div className="bg-gray-800 p-4 rounded-lg shadow">
           <h2 className="font-semibold mb-2">Tasks by Priority</h2>
           <div className="w-full h-56">
@@ -102,8 +108,7 @@ export default function DashboardPage() {
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* ─── Due Tasks Last 7 Days ───────────────── */}
+        {/* Due Tasks Last 7 Days */}
         <div className="bg-gray-800 p-4 rounded-lg shadow">
           <h2 className="font-semibold mb-2">Due Tasks Last 7 Days</h2>
           <div className="w-full h-56">
@@ -113,15 +118,14 @@ export default function DashboardPage() {
                 <XAxis dataKey="day" stroke="#9CA3AF" />
                 <YAxis allowDecimals={false} stroke="#9CA3AF" />
                 <Tooltip contentStyle={{ backgroundColor: '#1F2937' }} />
-                <Line type="monotone" dataKey="NotStarted"  stroke="#F87171" dot={false} name="Not Started"  />
-                <Line type="monotone" dataKey="InProgress"  stroke="#3B82F6" dot={false} name="In Progress"  />
-                <Line type="monotone" dataKey="Completed"   stroke="#10B981" dot={false} name="Completed"    />
+                <Line type="monotone" dataKey="NotStarted" stroke="#F87171" dot={false} name="Not Started" />
+                <Line type="monotone" dataKey="InProgress" stroke="#3B82F6" dot={false} name="In Progress" />
+                <Line type="monotone" dataKey="Completed"  stroke="#10B981" dot={false} name="Completed" />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* ─── Priority Distribution ────────────────── */}
+        {/* Priority Distribution */}
         <div className="bg-gray-800 p-4 rounded-lg shadow">
           <h2 className="font-semibold mb-2">Priority Distribution</h2>
           <div className="w-full h-64">
@@ -134,29 +138,15 @@ export default function DashboardPage() {
                   innerRadius="50%"
                   outerRadius="80%"
                   labelLine={false}
-                  /** destruct with defaults so no "undefined" errors */
-                  label={({
-                    cx = 0,
-                    cy = 0,
-                    midAngle = 0,
-                    innerRadius = 0,
-                    outerRadius = 0,
-                    percent = 0,
-                    name = '',
-                  }) => {
+                  label={({ cx=0, cy=0, midAngle=0, innerRadius=0, outerRadius=0, percent=0, name='' }) => {
                     const RAD = Math.PI / 180
                     const r = innerRadius + (outerRadius - innerRadius) * 1.3
                     const x = cx + r * Math.cos(-midAngle * RAD)
                     const y = cy + r * Math.sin(-midAngle * RAD)
                     return (
-                      <text
-                        x={x}
-                        y={y}
-                        fill="#fff"
+                      <text x={x} y={y} fill="#fff"
                         textAnchor={x > cx ? 'start' : 'end'}
-                        dominantBaseline="central"
-                        fontSize={12}
-                      >
+                        dominantBaseline="central" fontSize={12}>
                         {`${name}: ${(percent * 100).toFixed(0)}%`}
                       </text>
                     )
@@ -171,8 +161,7 @@ export default function DashboardPage() {
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* ─── Status Breakdown ────────────────────── */}
+        {/* Status Breakdown */}
         <div className="bg-gray-800 p-4 rounded-lg shadow">
           <h2 className="font-semibold mb-2">Status Breakdown</h2>
           <div className="space-y-4">
@@ -183,16 +172,12 @@ export default function DashboardPage() {
                   <span>{d.percent}%</span>
                 </div>
                 <div className="w-full bg-gray-700 rounded-full h-2">
-                  <div
-                    className="h-2 rounded-full"
-                    style={{ width: `${d.percent}%`, backgroundColor: d.color }}
-                  />
+                  <div className="h-2 rounded-full" style={{ width: `${d.percent}%`, backgroundColor: d.color }} />
                 </div>
               </div>
             ))}
           </div>
         </div>
-
       </div>
     </div>
   )

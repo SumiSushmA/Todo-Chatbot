@@ -1,206 +1,295 @@
+// src/app/dashboard/tasks/page.tsx
 'use client'
 
-import { Task } from '@/lib/tasks'
-import {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-  useState,
-} from 'react'
-import Calendar from 'react-calendar'
+import { FormEvent, useEffect, useState } from 'react'
+import Calendar, { CalendarProps } from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import {
   Bar,
   BarChart,
   CartesianGrid,
+  Tooltip as RechartsTooltip,
   ResponsiveContainer,
-  Tooltip,
   XAxis,
   YAxis,
 } from 'recharts'
-import { v4 as uuidv4 } from 'uuid'
+
+type Priority = 'Low' | 'Medium' | 'High'
+type Status   = 'not-started' | 'in-progress' | 'completed'
+type CalValue = CalendarProps['value']
+
+interface Task {
+  _id?: string
+  title: string
+  note: string
+  dueDateTime: string
+  priority: Priority
+  status: Status
+}
 
 export default function TasksPage() {
-  // ─── State ────────────────────────────────────────────────
-  const [tasks, setTasks]             = useState<Task[]>([])
-  const [showForm, setShowForm]       = useState(false)
-  const [editing, setEditing]         = useState<Task | null>(null)
-  const [date, setDate]               = useState<Date>(new Date())
+  // ─── State ─────────────────────────────────────────────────────────
+  const [tasks, setTasks]         = useState<Task[]>([])
+  const [modalOpen, setModalOpen] = useState(false)
+  const [editing, setEditing]     = useState<Task|null>(null)
 
-  // Form fields
-  const [title, setTitle]             = useState('')
-  const [note, setNote]               = useState('')
-  const [dueDateTime, setDueDateTime] = useState('')
-  const [priority, setPriority]       = useState<'Low'|'Medium'|'High'>('Medium')
-  const [status, setStatus]           = useState<'not-started'|'in-progress'|'completed'>('not-started')
-  const [imageData, setImageData]     = useState<string>()
+  const [title, setTitle]         = useState('')
+  const [note, setNote]           = useState('')
+  const [due, setDue]             = useState<Date>(new Date())
+  const [priority, setPriority]   = useState<Priority>('Low')
+  const [status, setStatus]       = useState<Status>('not-started')
 
-  // ─── Fetch tasks ─────────────────────────────────────────
+  // ─── Load tasks ──────────────────────────────────────────────────────
   useEffect(() => {
     fetch('/api/tasks')
       .then(r => r.json())
-      .then(setTasks)
+      .then((ts: Task[]) => setTasks(ts))
       .catch(console.error)
   }, [])
 
-  // ─── API helpers ─────────────────────────────────────────
-  async function saveTask(t: Task) {
-    await fetch('/api/tasks', {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json' },
-      body: JSON.stringify({ task: t }),
-    })
-  }
-  async function deleteTask(id: string) {
-    await fetch('/api/tasks', {
-      method: 'DELETE',
-      headers: { 'Content-Type':'application/json' },
-      body: JSON.stringify({ id }),
-    })
-    setTasks(ts => ts.filter(x => x.id !== id))
-  }
-
-  // ─── Image upload ────────────────────────────────────────
-  function onImageChange(e: ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return setImageData(undefined)
-    const reader = new FileReader()
-    reader.onload = () => setImageData(reader.result as string)
-    reader.readAsDataURL(file)
-  }
-
-  // ─── Form controls ────────────────────────────────────────
-  function startAdd() {
+  // ─── Handlers ───────────────────────────────────────────────────────
+  function openAdd() {
     setEditing(null)
-    setTitle(''); setNote(''); setDueDateTime(''); setPriority('Medium')
-    setStatus('not-started'); setImageData(undefined)
-    setShowForm(true)
+    setTitle(''); setNote(''); setDue(new Date())
+    setPriority('Low'); setStatus('not-started')
+    setModalOpen(true)
   }
-  function startEdit(t: Task) {
+
+  function openEdit(t: Task) {
     setEditing(t)
     setTitle(t.title)
     setNote(t.note)
-    setDueDateTime(t.dueDateTime)
+    setDue(new Date(t.dueDateTime))
     setPriority(t.priority)
     setStatus(t.status)
-    setImageData(t.image)
-    setShowForm(true)
+    setModalOpen(true)
   }
-  function clearForm() {
-    setShowForm(false)
-    setEditing(null)
-  }
-  async function onSubmit(e: FormEvent) {
+
+  async function saveTask(e: FormEvent) {
     e.preventDefault()
-    const t: Task = {
-      id: editing?.id || uuidv4(),
-      title,
-      note,
-      dueDateTime,
-      priority,
-      status,
-      image: imageData,
-    }
-    await saveTask(t)
-    setTasks(ts => {
-      const i = ts.findIndex(x => x.id === t.id)
-      if (i > -1) { ts[i] = t; return [...ts] }
-      return [...ts, t]
+    const payload = editing
+      ? { _id: editing._id, title, note, dueDateTime: due.toISOString(), priority, status }
+      : { title, note, dueDateTime: due.toISOString(), priority, status }
+
+    await fetch('/api/tasks', {
+      method: editing ? 'PUT' : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
     })
-    clearForm()
+    setModalOpen(false)
+    // reload
+    const ts = await fetch('/api/tasks').then(r => r.json())
+    setTasks(ts)
   }
 
-  // ─── Quick complete ───────────────────────────────────────
-  async function quickComplete(t: Task) {
-    const upd = { ...t, status: 'completed' as const }
-    await saveTask(upd)
-    setTasks(ts => ts.map(x => x.id === t.id ? upd : x))
+  async function deleteTask(id: string) {
+    if (!confirm('Delete this task?')) return
+    await fetch('/api/tasks', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ _id: id }),
+    })
+    setTasks(tasks.filter(t => t._id !== id))
   }
 
-  // ─── Calendar onChange ────────────────────────────────────
-  const onCalendarChange = (v: any) => {
-    if (v instanceof Date) setDate(v)
-    else if (Array.isArray(v) && v[0] instanceof Date) setDate(v[0])
-  }
-
-  // ─── Split statuses ──────────────────────────────────────
-  const todo   = tasks.filter(t => t.status !== 'completed')
-  const done   = tasks.filter(t => t.status === 'completed')
-  const inProg = tasks.filter(t => t.status === 'in-progress')
-  const notSt  = tasks.filter(t => t.status === 'not-started')
-
-  // ─── Prepare bar‐chart data ───────────────────────────────
+  // ─── Chart data ────────────────────────────────────────────────────
+  const prioCounts = { Low: 0, Medium: 0, High: 0 }
+  tasks.forEach(t => prioCounts[t.priority]++)
   const barData = [
-    { status: 'Completed',    count: done.length    },
-    { status: 'In Progress',  count: inProg.length  },
-    { status: 'Not Started',  count: notSt.length   },
+    { name: 'Low',    count: prioCounts.Low    },
+    { name: 'Medium', count: prioCounts.Medium },
+    { name: 'High',   count: prioCounts.High   },
   ]
 
+  // ─── Completed list ───────────────────────────────────────────────
+  const completed = tasks.filter(t => t.status === 'completed')
+
   return (
-    <div className="p-6 bg-gray-50 min-h-full">
-      <h1 className="text-2xl font-semibold mb-4">Tasks</h1>
-      <div className="flex w-full gap-6">
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Tasks</h1>
+        <button
+          onClick={openAdd}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          + Add Task
+        </button>
+      </div>
 
-        {/* ─── Left Column (~2/3) ────────────────────────── */}
-        <div className="flex-[2] space-y-4">
-          <button onClick={startAdd} className="text-blue-600 hover:underline mb-2">
-            + Add Task
-          </button>
-
-          {showForm && (
-            <form onSubmit={onSubmit} className="bg-white p-4 rounded shadow space-y-3">
-              {/* Title, Note, datetime, priority & status selects, image upload, etc. */}
-              {/* …same as before… */}
-            </form>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* ─── Left (2/3) Task List ───────────────────────────── */}
+        <div className="lg:col-span-2 space-y-4">
+          {tasks.length === 0 && (
+            <p className="text-gray-500">No tasks yet.</p>
           )}
-
-          <ul className="space-y-4">
-            {todo.map(t => (
-              <li key={t.id} className="bg-white border rounded p-4 flex justify-between items-start shadow">
-                {/* Task details + Complete / Edit / Delete */}
-              </li>
-            ))}
-          </ul>
+          {tasks.map(t => (
+            <div
+              key={t._id}
+              className="bg-white p-4 rounded shadow flex justify-between"
+            >
+              <div>
+                <h2 className="font-semibold">{t.title}</h2>
+                <p className="text-gray-600">{t.note}</p>
+                <p className="text-xs text-gray-500">
+                  Due: {new Date(t.dueDateTime).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="text-right space-y-2">
+                <span className="inline-block px-2 py-1 bg-gray-200 rounded text-xs">
+                  {t.status.replace('-', ' ')}
+                </span>
+                <div className="space-x-2">
+                  <button
+                    onClick={() => openEdit(t)}
+                    className="text-blue-600 text-sm hover:underline"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => t._id && deleteTask(t._id)}
+                    className="text-red-600 text-sm hover:underline"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* ─── Right Column (~1/3) ────────────────────────── */}
-        <div className="flex-1 space-y-6">
-
-          {/* ─── BAR CHART for statuses ────────────────────── */}
-          <div className="bg-white p-4 rounded shadow">
-            <h3 className="font-semibold mb-2">Task Status</h3>
-            <div style={{ width: '100%', height: 250 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={barData} margin={{ left: -20 }}>
+        {/* ─── Right (1/3) Chart / Calendar / Completed ───────── */}
+        <div className="space-y-6">
+          {/* Chart */}
+          <div className="bg-white p-4 rounded shadow flex-1">
+            <h3 className="font-medium mb-2">Priority Breakdown</h3>
+            <div className="h-48">
+              <ResponsiveContainer>
+                <BarChart data={barData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="status" />
+                  <XAxis dataKey="name" />
                   <YAxis allowDecimals={false} />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="#4F46E5" barSize={40} />
+                  <RechartsTooltip />
+                  <Bar dataKey="count" fill="#3b82f6" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
 
-          {/* ─── Calendar ─────────────────────────────── */}
-          <div className="bg-white p-4 rounded shadow">
-            <h3 className="font-semibold mb-2">Calendar</h3>
-            <Calendar onChange={onCalendarChange} value={date} />
+          {/* Calendar */}
+          <div className="bg-white p-4 rounded shadow flex-1">
+            <h3 className="font-medium mb-2">Calendar</h3>
+            <Calendar
+              className="w-full"
+              onChange={(value: CalValue, _evt) => {
+                if (value instanceof Date) setDue(value)
+              }}
+              value={due}
+            />
           </div>
 
-          {/* ─── Completed list ─────────────────────────── */}
-          <div className="bg-white p-4 rounded shadow">
-            <h3 className="font-semibold mb-2">Completed Tasks</h3>
-            {done.length === 0 ? (
-              <p className="text-gray-500">No completed tasks yet.</p>
-            ) : (
-              <ul className="list-disc pl-5 space-y-1">
-                {done.map(t => <li key={t.id}>{t.title}</li>)}
+          {/* Completed */}
+          <div className="bg-white p-4 rounded shadow flex-1 overflow-auto">
+            <h3 className="font-medium mb-2">Completed Tasks</h3>
+            {completed.length > 0 ? (
+              <ul className="list-disc list-inside space-y-1">
+                {completed.map(t => (
+                  <li key={t._id}>{t.title}</li>
+                ))}
               </ul>
+            ) : (
+              <p className="text-gray-500">No completed tasks yet.</p>
             )}
           </div>
         </div>
       </div>
+
+      {/* ─── Modal ───────────────────────────────────────────────────── */}
+      {modalOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+          onClick={() => setModalOpen(false)}
+        >
+          <div
+            className="bg-white p-6 rounded shadow max-w-md w-full"
+            onClick={e => e.stopPropagation()}
+          >
+            <h2 className="text-xl font-semibold mb-4">
+              {editing ? 'Edit Task' : 'New Task'}
+            </h2>
+            <form onSubmit={saveTask} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium">Title</label>
+                <input
+                  required
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
+                  className="mt-1 w-full border rounded px-2 py-1"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Note</label>
+                <textarea
+                  required
+                  value={note}
+                  onChange={e => setNote(e.target.value)}
+                  className="mt-1 w-full border rounded px-2 py-1"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Due Date</label>
+                <Calendar
+                  onChange={(value: CalValue, _evt) => {
+                    if (value instanceof Date) setDue(value)
+                  }}
+                  value={due}
+                  className="mt-2"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium">Priority</label>
+                  <select
+                    value={priority}
+                    onChange={e => setPriority(e.target.value as Priority)}
+                    className="mt-1 w-full border rounded px-2 py-1"
+                  >
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium">Status</label>
+                  <select
+                    value={status}
+                    onChange={e => setStatus(e.target.value as Status)}
+                    className="mt-1 w-full border rounded px-2 py-1"
+                  >
+                    <option value="not-started">Not Started</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex justify-end space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(false)}
+                  className="px-4 py-2 border rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

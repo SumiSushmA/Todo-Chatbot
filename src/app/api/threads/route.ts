@@ -1,26 +1,24 @@
-// server-only
-import { loadAll, saveAll } from '@/lib/tasks'
+// src/app/api/threads/route.ts
+import ThreadModel from '@/lib/models/Thread'
+import connectToDatabase from '@/lib/mongodb'
 import { NextResponse } from 'next/server'
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const id = searchParams.get('thread')
-  const all = await loadAll()
-  const thread = (all.threads || []).find(t => t.id === id) || null
-  return NextResponse.json(thread)
+export async function GET() {
+  await connectToDatabase()
+  const threads = await ThreadModel.find().sort({ updated: -1 })
+  return NextResponse.json(threads)
 }
 
 export async function POST(request: Request) {
-  const data = await request.json()  // { thread: Thread }
-  const all = await loadAll()
-  const threads = all.threads || []
-
-  // upsert
-  const idx = threads.findIndex(t => t.id === data.thread.id)
-  if (idx >= 0) threads[idx] = data.thread
-  else threads.push(data.thread)
-  await saveAll({ ...all, threads })
-
-  return NextResponse.json({ success: true })
+  await connectToDatabase()
+  const body = await request.json()
+  const created = await ThreadModel.create(body)
+  return NextResponse.json(created, { status: 201 })
 }
 
+export async function DELETE(request: Request) {
+  await connectToDatabase()
+  const { thread } = await request.json()
+  await ThreadModel.deleteOne({ thread })
+  return NextResponse.json({ ok: true })
+}
