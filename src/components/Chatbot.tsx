@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react';
+import ChatVoice from './ChatVoice';
 
 type Msg = { sender: 'user' | 'bot'; text: string }
 
@@ -10,53 +11,54 @@ export default function Chatbot() {
   const [loading, setLoading] = useState(false)
   const endRef = useRef<HTMLDivElement>(null)
 
-  // scroll to bottom whenever messages change
+  // auto-scroll
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  const sendMessage = async () => {
-    if (!input.trim()) return
-    const userMsg: Msg = { sender: 'user', text: input.trim() }
+  const callBot = async (convo: Msg[]) => {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: convo }),
+    })
+    return res.json() as Promise<{ content?: string; error?: unknown }>
+  }
+
+  // unified send: used by text input + voice
+  const sendMessage = async (text?: string) => {
+    const contentToSend = (text ?? input).trim()
+    if (!contentToSend || loading) return
+
+    const userMsg: Msg = { sender: 'user', text: contentToSend }
     const convo = [...messages, userMsg]
     setMessages(convo)
-    setInput('')
+    if (!text) setInput('')
     setLoading(true)
 
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: convo }),
-      })
-      const { content, error } = await res.json()
+      const { content, error } = await callBot(convo)
       if (error) {
-        setMessages(prev => [
-          ...prev,
-          { sender: 'bot', text: '⚠️ ' + JSON.stringify(error) },
-        ])
+        setMessages(prev => [...prev, { sender: 'bot', text: '⚠️ ' + JSON.stringify(error) }])
       } else {
-        setMessages(prev => [...prev, { sender: 'bot', text: content }])
+        setMessages(prev => [...prev, { sender: 'bot', text: content || '' }])
       }
     } catch {
-      setMessages(prev => [
-        ...prev,
-        { sender: 'bot', text: '⚠️ Network error' },
-      ])
+      setMessages(prev => [...prev, { sender: 'bot', text: '⚠️ Network error' }])
     } finally {
       setLoading(false)
     }
   }
+
+  // last bot reply for TTS
+  const lastBotReply = [...messages].reverse().find(m => m.sender === 'bot')?.text
 
   return (
     <div className="flex flex-col h-full">
       {/* Chat history */}
       <div className="flex-1 overflow-y-auto p-4 space-y-2">
         {messages.map((m, i) => (
-          <div
-            key={i}
-            className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
+          <div key={i} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div
               className={`
                 max-w-[70%] px-3 py-2 rounded-lg break-words
@@ -70,8 +72,13 @@ export default function Chatbot() {
         <div ref={endRef} />
       </div>
 
-      {/* Input */}
-      <div className="border-t p-4 flex items-center space-x-2">
+      {/* Voice controls */}
+      <div className="border-t px-4 pt-3">
+        <ChatVoice onSendMessage={(t) => sendMessage(t)} lastBotReply={lastBotReply} />
+      </div>
+
+      {/* Text input */}
+      <div className="p-4 flex items-center space-x-2">
         <input
           type="text"
           value={input}
@@ -82,7 +89,7 @@ export default function Chatbot() {
           placeholder="Type your message…"
         />
         <button
-          onClick={sendMessage}
+          onClick={() => sendMessage()}
           disabled={loading}
           className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 disabled:opacity-50 transition"
         >
