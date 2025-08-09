@@ -1,50 +1,60 @@
-// src/app/dashboard/chat/page.tsx
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
-
 import ChatWindow, { Msg, Thread } from '@/components/ChatWindow'
+import { useEffect, useState } from 'react'
+import { v4 as uuid } from 'uuid'
 
 export default function ChatPage() {
-  const router       = useRouter()
-  const searchParams = useSearchParams()
-  const threadId     = searchParams.get('thread') || ''
-
-  const [thread, setThread] = useState<Thread>({
-    id: '',
-    title: '',
+  const [thread, setThread] = useState<Thread>(() => ({
+    id: uuid(),
+    title: 'New Conversation',
     messages: [],
-  })
+  }))
 
+  // Load the previously active thread (if any)
   useEffect(() => {
-    if (!threadId) return
-    fetch(`/api/threads?thread=${threadId}`)
-      .then((r) => r.json())
-      .then((t) => t && setThread(t))
-      .catch(console.error)
-  }, [threadId])
+    const activeId = localStorage.getItem('active_thread')
+    const raw = localStorage.getItem('chat_threads')
+    if (!raw) return
+    try {
+      const arr = JSON.parse(raw) as Thread[]
+      const match = arr.find(t => t.id === (activeId || ''))
+      if (match) setThread(match)
+    } catch {}
+  }, [])
 
-  async function handleUpdate(msgs: Msg[]) {
-    let t = { ...thread, messages: msgs }
+  const handleUpdate = (msgs: Msg[]) => {
+    setThread(t => ({ ...t, messages: msgs }))
+  }
 
-    if (!t.id) {
-      t.id    = uuidv4()
-      t.title = msgs[0]?.text.slice(0, 20) || 'New Chat'
-      router.replace(`/dashboard/chat?thread=${t.id}`)
+  const newChat = () => {
+    const fresh: Thread = { id: uuid(), title: 'New Conversation', messages: [] }
+    setThread(fresh)
+    // write an empty thread to localStorage and make it active
+    const key = 'chat_threads'
+    let arr: Thread[] = []
+    const raw = localStorage.getItem(key)
+    if (raw) {
+      try { arr = JSON.parse(raw) } catch {}
     }
-
-    setThread(t)
-    await fetch('/api/threads', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ thread: t }),
-    })
+    arr.push(fresh)
+    localStorage.setItem(key, JSON.stringify(arr))
+    localStorage.setItem('active_thread', fresh.id)
   }
 
   return (
-    <div className="p-6 h-full bg-white">
+    <div className="p-6 h-full bg-white space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold">Chat</h2>
+        <button
+          onClick={newChat}
+          className="px-3 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"
+          title="Start a brand new conversation"
+        >
+          + New Chat
+        </button>
+      </div>
+
       <ChatWindow thread={thread} onUpdate={handleUpdate} />
     </div>
   )
