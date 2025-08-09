@@ -1,70 +1,151 @@
-# 📋✨ To-Do Chatbot & Task Manager
+# 📋🤖 AI-Powered Conversational Task Management System for Optimizing Productivity
 
-A **Next.js + React** application combining:
-
-1. 🤖 **Gemini-powered Chatbot**  
-   • Upload a small clustered dataset of “cluster tasks”  
-   • Embed them via Google Gemini Embeddings  
-   • Serve a conversational Q&A over your tasks  
-
-2. ✅ **Interactive To-Do List**  
-   • Create, search, complete, and delete tasks  
-   • Each task has a **title**, **notes**, **due date/time**, **priority**, **status**, and optional **image**  
-   • Persistent in **localStorage** so tasks survive page reloads  
-   • Built-in analytics: three “donut” charts for Not Started / In Progress / Completed percentages  
-   • Embedded 📅 **react-calendar** to visualize dates  
-   • Separate “Completed Tasks” panel with thumbnails  
+This project is part of a **thesis assignment** focusing on developing a productivity optimization tool that integrates an **AI-powered conversational interface** with an **interactive task management system**.  
+The system aims to enhance individual productivity by enabling **natural language interactions**, **intelligent task querying**, and **real-time analytics**.
 
 ---
 
-## 🚀 Features
+## 🎯 Project Overview
 
-- **💬 Chatbot**  
-  • Uses Gemini Embeddings to find top-3 relevant “cluster tasks”  
-  • Calls Gemini Chat to answer user queries in context  
+The **AI-Powered Conversational Task Management System** combines:
+1. **Conversational AI (Google Gemini)** for contextual task-related queries.
+2. **Task Management Dashboard** for organizing, tracking, and analyzing productivity.
+3. **Visual Analytics** to monitor progress and optimize workflow.
 
-- **📝 To-Do Manager**  
-  • ➕ Add tasks with:  
-    – Title, notes, due date/time, priority (High/Medium/Low), status (Not Started/In Progress/Completed), image upload  
-  • 🔍 Search/filter tasks  
-  • ✔️ Mark tasks complete (with confirmation)  
-  • 🗑️ Delete tasks  
-  • 💾 Persist tasks in browser `localStorage`  
+The AI assistant can:
+- Answer queries about stored tasks.
+- Suggest actions or provide summaries.
+- Retrieve relevant task clusters using embeddings.
 
-- **📊 Analytics & 📆 Calendar**  
-  • Donut charts showing % of tasks in each status  
-  • Monthly calendar view  
-  • “Completed Tasks” list with completion date & image  
+The task manager allows:
+- Adding, editing, and deleting tasks with multiple attributes.
+- Persisting tasks locally to maintain data after reloads.
+- Viewing progress in charts and calendar format.
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Features
 
-- **🖥️ Frontend & SSR**: Next.js 14  
-- **🤖 Chat & Embeddings**: Google Gemini REST API  
-- **⚛️ State & Storage**: React Hooks + `localStorage`  
-- **🎨 UI**: Tailwind CSS, `react-calendar`, `react-feather` icons  
-- **📈 Charts**: Inline SVG “donut” graphs  
+### **1. AI-Powered Conversational Chatbot**
+- Uses **Google Gemini API** for natural language processing.
+- Embeds clustered task datasets for context-based answers.
+- Retrieves **top-3 relevant task clusters** per query.
+- Supports both **text and voice** input (speech-to-text & text-to-speech).
+
+### **2. Task Manager**
+- Create tasks with:
+  - Title & description
+  - Due date/time
+  - Priority level (High / Medium / Low)
+  - Status (Not Started / In Progress / Completed)
+  - Optional image upload
+- Search and filter tasks.
+- Mark tasks as complete.
+- Local persistence via **`localStorage`**.
+
+### **3. Analytics & Calendar**
+- Donut charts displaying task distribution by status.
+- Monthly calendar view for deadline visualization.
+- Completed tasks panel with thumbnails and completion dates.
 
 ---
 
-## 🔧 Getting Started
+## 🛠️ Technology Stack
 
-1. **Clone & Install**  
-   ```bash
-   git clone (https://github.com/SumiSushmA/Todo-Chatbot.git)
-   cd Todo-Chatbot
-   npm install
+| Component          | Technology |
+|--------------------|------------|
+| Frontend           | Next.js 14, React, Tailwind CSS |
+| Conversational AI  | Google Gemini REST API |
+| Charts             | Inline SVG donut graphs |
+| Calendar           | `react-calendar` |
+| State Management   | React Hooks + LocalStorage |
+| Voice Features     | Web Speech API (SpeechRecognition & SpeechSynthesis) |
 
-2. **Environment**
+---
 
+## 📂 Project Structure
 
-Create a .env.local in project root with your Gemini API key:
+```
 
+/components       → Reusable UI components (Chatbot, Task Manager, Charts, Voice Control)
+/pages            → Next.js pages
+/lib              → API utilities & Gemini integration
+/public           → Static assets (images, icons)
+/styles           → Tailwind CSS styling
+
+````
+
+---
+
+## 🔧 Setup & Installation
+
+### 1️⃣ Clone & Install
+```bash
+git clone https://github.com/SumiSushmA/Todo-Chatbot.git
+cd Todo-Chatbot
+npm install
+````
+
+### 2️⃣ Configure Environment
+
+Create a `.env.local` file in the root directory:
+
+```env
 GEMINI_API_KEY=YOUR_GOOGLE_GEN_API_KEY
+```
 
+### 3️⃣ Run the Application
 
-3. **Run in Dev**
-  ```bash
+```bash
 npm run dev
+```
+
+Access the app at: **[http://localhost:3000](http://localhost:3000)**
+
+---
+
+## 💡 How to Use
+
+1. **Chatbot Interface**
+
+   * Navigate to the chatbot page.
+   * Type or speak your question about tasks.
+   * Receive AI-generated contextual answers.
+   * Voice responses are enabled for bot replies.
+
+2. **Task Management**
+
+   * Add new tasks with full details.
+   * Update or delete tasks anytime.
+   * Mark tasks complete when done.
+   * View analytics and upcoming deadlines.
+
+3. **Analytics & Calendar**
+
+   * Track progress visually via donut charts.
+   * Use the calendar to see due dates.
+   * Review completed tasks with images.
+
+---
+
+## 📊 Research Objective
+
+The primary objective is to **optimize productivity** by merging **AI conversational capabilities** with structured task management.
+By enabling natural language interaction and integrating real-time analytics, the system:
+
+* Improves task retrieval and organization efficiency.
+* Provides quick contextual insights.
+* Encourages consistent task completion.
+
+---
+
+## 🏗️ Future Enhancements
+
+* Cloud database integration for multi-device sync.
+* Advanced NLP for task intent detection.
+* Integration with third-party productivity tools (Google Calendar, Trello, etc.).
+* Push notifications for deadlines.
+
+---
+
 
